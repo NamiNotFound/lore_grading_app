@@ -6,7 +6,9 @@ import 'package:lore_grading_app/models/task.dart';
 import 'package:intl/intl.dart';
 
 class TodoScreen extends StatelessWidget {
-  const TodoScreen({super.key});
+  final VoidCallback? onMenuPressed;
+
+  const TodoScreen({super.key, this.onMenuPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +18,12 @@ class TodoScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        leading: onMenuPressed != null
+            ? IconButton(
+                icon: const Icon(Icons.menu),
+                onPressed: onMenuPressed,
+              )
+            : null,
         title: const Text(
           'My Tasks',
           style: TextStyle(fontWeight: FontWeight.bold),
@@ -83,7 +91,7 @@ class TodoScreen extends StatelessWidget {
                   : todoProvider.filteredTasks.isEmpty
                       ? _buildEmptyState(context)
                       : ListView.builder(
-                          padding: const EdgeInsets.fromLTRB(16, 8, 16, 100),
+                          padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
                           itemCount: todoProvider.filteredTasks.length,
                           physics: const BouncingScrollPhysics(),
                           itemBuilder: (context, index) {
@@ -95,15 +103,12 @@ class TodoScreen extends StatelessWidget {
           ],
         ),
       ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 84.0, right: 8.0), // elevate FAB above floating bottom bar
-        child: FloatingActionButton.extended(
-          onPressed: () => _showTaskBottomSheet(context, isOnline: connectionProvider.isOnline),
-          label: const Text('Add Task', style: TextStyle(fontWeight: FontWeight.bold)),
-          icon: const Icon(Icons.add),
-          elevation: 4,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => _showTaskBottomSheet(context, isOnline: connectionProvider.isOnline),
+        label: const Text('Add Task', style: TextStyle(fontWeight: FontWeight.bold)),
+        icon: const Icon(Icons.add),
+        elevation: 4,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       ),
     );
   }

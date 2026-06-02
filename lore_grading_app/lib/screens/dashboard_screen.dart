@@ -7,7 +7,12 @@ import 'package:lore_grading_app/provider/theme_provider.dart';
 import 'package:intl/intl.dart';
 
 class DashboardScreen extends StatelessWidget {
-  const DashboardScreen({super.key});
+  final VoidCallback? onMenuPressed;
+
+  const DashboardScreen({
+    super.key,
+    this.onMenuPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +21,9 @@ class DashboardScreen extends StatelessWidget {
     final theme = Theme.of(context);
     final themeProvider = Provider.of<ThemeProvider>(context);
 
-    final String todayDate = DateFormat('EEEE, MMM d, y').format(DateTime.now());
+    final String todayDate = DateFormat(
+      'EEEE, MMM d, y',
+    ).format(DateTime.now());
 
     // Color list for subject cards
     final List<Color> subjectColors = [
@@ -32,7 +39,12 @@ class DashboardScreen extends StatelessWidget {
       body: SafeArea(
         bottom: false,
         child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(20, 16, 20, 100), // extra bottom padding for floating nav bar
+          padding: const EdgeInsets.fromLTRB(
+            20,
+            16,
+            20,
+            100,
+          ), // extra bottom padding for floating nav bar
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -40,29 +52,40 @@ class DashboardScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  Row(
                     children: [
-                      Text(
-                        'Welcome back,',
-                        style: theme.textTheme.titleMedium?.copyWith(
-                          color: theme.colorScheme.onSurface.withOpacity(0.6),
+                      if (onMenuPressed != null) ...[
+                        IconButton(
+                          icon: const Icon(Icons.menu),
+                          onPressed: onMenuPressed,
                         ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        'Alex Carter 👋',
-                        style: theme.textTheme.headlineMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: theme.colorScheme.onSurface,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        todayDate,
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.colorScheme.onSurface.withOpacity(0.5),
-                        ),
+                        const SizedBox(width: 8),
+                      ],
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Welcome back,',
+                            style: theme.textTheme.titleMedium?.copyWith(
+                              color: theme.colorScheme.onSurface.withOpacity(0.6),
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Jena mae Lore 👋',
+                            style: theme.textTheme.headlineMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: theme.colorScheme.onSurface,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            todayDate,
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: theme.colorScheme.onSurface.withOpacity(0.5),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -82,11 +105,16 @@ class DashboardScreen extends StatelessWidget {
                                         height: 20,
                                         child: CircularProgressIndicator(
                                           strokeWidth: 2,
-                                          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
+                                                Colors.white,
+                                              ),
                                         ),
                                       ),
                                       SizedBox(width: 12),
-                                      Text('Syncing local queue with mock cloud database...'),
+                                      Text(
+                                        'Syncing local queue with mock cloud database...',
+                                      ),
                                     ],
                                   ),
                                   duration: Duration(milliseconds: 1200),
@@ -95,11 +123,19 @@ class DashboardScreen extends StatelessWidget {
                             },
                             onSyncComplete: () {
                               // Reload data after sync completes
-                              Provider.of<TodoProvider>(context, listen: false).loadTasks();
-                              Provider.of<GradeProvider>(context, listen: false).loadGrades();
+                              Provider.of<TodoProvider>(
+                                context,
+                                listen: false,
+                              ).loadTasks();
+                              Provider.of<GradeProvider>(
+                                context,
+                                listen: false,
+                              ).loadGrades();
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                  content: Text('Sync complete! Mock cloud updated.'),
+                                  content: Text(
+                                    'Sync complete! Mock cloud updated.',
+                                  ),
                                   backgroundColor: Colors.green,
                                   duration: Duration(seconds: 2),
                                 ),
@@ -109,7 +145,10 @@ class DashboardScreen extends StatelessWidget {
                         },
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 300),
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 6,
+                          ),
                           decoration: BoxDecoration(
                             color: connectionProvider.isOnline
                                 ? Colors.green.withOpacity(0.15)
@@ -124,17 +163,25 @@ class DashboardScreen extends StatelessWidget {
                           child: Row(
                             children: [
                               Icon(
-                                connectionProvider.isOnline ? Icons.wifi : Icons.wifi_off,
+                                connectionProvider.isOnline
+                                    ? Icons.wifi
+                                    : Icons.wifi_off,
                                 size: 14,
-                                color: connectionProvider.isOnline ? Colors.green : Colors.red,
+                                color: connectionProvider.isOnline
+                                    ? Colors.green
+                                    : Colors.red,
                               ),
                               const SizedBox(width: 4),
                               Text(
-                                connectionProvider.isOnline ? 'Online' : 'Offline',
+                                connectionProvider.isOnline
+                                    ? 'Online'
+                                    : 'Offline',
                                 style: TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.bold,
-                                  color: connectionProvider.isOnline ? Colors.green : Colors.red,
+                                  color: connectionProvider.isOnline
+                                      ? Colors.green
+                                      : Colors.red,
                                 ),
                               ),
                             ],
@@ -149,10 +196,14 @@ class DashboardScreen extends StatelessWidget {
                         },
                         icon: AnimatedSwitcher(
                           duration: const Duration(milliseconds: 300),
-                          transitionBuilder: (child, anim) => RotationTransition(
-                            turns: anim,
-                            child: ScaleTransition(scale: anim, child: child),
-                          ),
+                          transitionBuilder: (child, anim) =>
+                              RotationTransition(
+                                turns: anim,
+                                child: ScaleTransition(
+                                  scale: anim,
+                                  child: child,
+                                ),
+                              ),
                           child: Icon(
                             themeProvider.isDarkMode
                                 ? Icons.light_mode
@@ -257,7 +308,9 @@ class DashboardScreen extends StatelessWidget {
                               child: CircularProgressIndicator(
                                 value: gradeProvider.overallAverage / 100,
                                 strokeWidth: 8,
-                                valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
+                                valueColor: const AlwaysStoppedAnimation<Color>(
+                                  Colors.white,
+                                ),
                                 backgroundColor: Colors.white.withOpacity(0.2),
                               ),
                             ),
@@ -279,9 +332,21 @@ class DashboardScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        _buildGpaStat('Grade Letter', gradeProvider.overallLetterGrade, Icons.grade),
-                        _buildGpaStat('Tasks Due', '${todoProvider.pendingCount}', Icons.assignment_late),
-                        _buildGpaStat('Graded Items', '${gradeProvider.allGrades.length}', Icons.check_circle),
+                        _buildGpaStat(
+                          'Grade Letter',
+                          gradeProvider.overallLetterGrade,
+                          Icons.grade,
+                        ),
+                        _buildGpaStat(
+                          'Tasks Due',
+                          '${todoProvider.pendingCount}',
+                          Icons.assignment_late,
+                        ),
+                        _buildGpaStat(
+                          'Graded Items',
+                          '${gradeProvider.allGrades.length}',
+                          Icons.check_circle,
+                        ),
                       ],
                     ),
                   ],
@@ -306,9 +371,12 @@ class DashboardScreen extends StatelessWidget {
                   physics: const BouncingScrollPhysics(),
                   itemCount: gradeProvider.subjectAverages.length,
                   itemBuilder: (context, index) {
-                    final String subject = gradeProvider.subjectAverages.keys.elementAt(index);
-                    final double average = gradeProvider.subjectAverages[subject] ?? 0.0;
-                    final cardColor = subjectColors[index % subjectColors.length];
+                    final String subject = gradeProvider.subjectAverages.keys
+                        .elementAt(index);
+                    final double average =
+                        gradeProvider.subjectAverages[subject] ?? 0.0;
+                    final cardColor =
+                        subjectColors[index % subjectColors.length];
 
                     String letter = 'F';
                     if (average >= 90) {
@@ -360,15 +428,15 @@ class DashboardScreen extends StatelessWidget {
                                 children: [
                                   Text(
                                     '${average.toStringAsFixed(1)}%',
-                                    style: theme.textTheme.titleMedium?.copyWith(
-                                      fontWeight: FontWeight.w600,
-                                    ),
+                                    style: theme.textTheme.titleMedium
+                                        ?.copyWith(fontWeight: FontWeight.w600),
                                   ),
                                   const SizedBox(height: 2),
                                   Text(
                                     'Average',
                                     style: theme.textTheme.bodySmall?.copyWith(
-                                      color: theme.colorScheme.onSurface.withOpacity(0.4),
+                                      color: theme.colorScheme.onSurface
+                                          .withOpacity(0.4),
                                     ),
                                   ),
                                 ],
@@ -378,7 +446,10 @@ class DashboardScreen extends StatelessWidget {
                                   color: cardColor.withOpacity(0.15),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 4,
+                                ),
                                 child: Text(
                                   letter,
                                   style: TextStyle(
@@ -396,8 +467,11 @@ class DashboardScreen extends StatelessWidget {
                             child: LinearProgressIndicator(
                               value: average / 100,
                               minHeight: 6,
-                              valueColor: AlwaysStoppedAnimation<Color>(cardColor),
-                              backgroundColor: theme.colorScheme.onSurface.withOpacity(0.05),
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                cardColor,
+                              ),
+                              backgroundColor: theme.colorScheme.onSurface
+                                  .withOpacity(0.05),
                             ),
                           ),
                         ],
@@ -423,7 +497,9 @@ class DashboardScreen extends StatelessWidget {
                       // Let's inform the user to tap the tab.
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text('Tap the To-Do icon in the navigation bar to see all.'),
+                          content: Text(
+                            'Tap the To-Do icon in the navigation bar to see all.',
+                          ),
                           duration: Duration(seconds: 2),
                         ),
                       );
@@ -432,9 +508,16 @@ class DashboardScreen extends StatelessWidget {
                       children: [
                         Text(
                           'See All',
-                          style: TextStyle(color: theme.colorScheme.primary, fontWeight: FontWeight.w600),
+                          style: TextStyle(
+                            color: theme.colorScheme.primary,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
-                        Icon(Icons.chevron_right, size: 16, color: theme.colorScheme.primary),
+                        Icon(
+                          Icons.chevron_right,
+                          size: 16,
+                          color: theme.colorScheme.primary,
+                        ),
                       ],
                     ),
                   ),
@@ -450,7 +533,9 @@ class DashboardScreen extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: theme.cardColor,
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: theme.colorScheme.onSurface.withOpacity(0.08)),
+                    border: Border.all(
+                      color: theme.colorScheme.onSurface.withOpacity(0.08),
+                    ),
                   ),
                   child: const Center(
                     child: Text(
@@ -460,74 +545,92 @@ class DashboardScreen extends StatelessWidget {
                   ),
                 )
               else
-                ...todoProvider.filteredTasks.where((t) => !t.isCompleted).take(2).map((task) {
-                  final daysLeft = task.dueDate.difference(DateTime.now()).inDays;
-                  String dueText = '';
-                  Color dueColor = Colors.green;
+                ...todoProvider.filteredTasks
+                    .where((t) => !t.isCompleted)
+                    .take(2)
+                    .map((task) {
+                      final daysLeft = task.dueDate
+                          .difference(DateTime.now())
+                          .inDays;
+                      String dueText = '';
+                      Color dueColor = Colors.green;
 
-                  if (daysLeft < 0) {
-                    dueText = 'Overdue';
-                    dueColor = Colors.red;
-                  } else if (daysLeft == 0) {
-                    dueText = 'Due Today';
-                    dueColor = Colors.orange;
-                  } else if (daysLeft == 1) {
-                    dueText = 'Due Tomorrow';
-                    dueColor = Colors.orange;
-                  } else {
-                    dueText = 'Due in $daysLeft days';
-                    dueColor = theme.colorScheme.primary;
-                  }
+                      if (daysLeft < 0) {
+                        dueText = 'Overdue';
+                        dueColor = Colors.red;
+                      } else if (daysLeft == 0) {
+                        dueText = 'Due Today';
+                        dueColor = Colors.orange;
+                      } else if (daysLeft == 1) {
+                        dueText = 'Due Tomorrow';
+                        dueColor = Colors.orange;
+                      } else {
+                        dueText = 'Due in $daysLeft days';
+                        dueColor = theme.colorScheme.primary;
+                      }
 
-                  return Container(
-                    margin: const EdgeInsets.only(bottom: 12),
-                    decoration: BoxDecoration(
-                      color: theme.cardColor,
-                      borderRadius: BorderRadius.circular(18),
-                      border: Border.all(
-                        color: theme.colorScheme.onSurface.withOpacity(0.08),
-                      ),
-                    ),
-                    child: ListTile(
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                      leading: Checkbox(
-                        value: task.isCompleted,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-                        activeColor: theme.colorScheme.primary,
-                        onChanged: (_) {
-                          todoProvider.toggleTaskStatus(task.id, connectionProvider.isOnline);
-                        },
-                      ),
-                      title: Text(
-                        task.title,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      subtitle: Text(
-                        task.description,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      trailing: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                      return Container(
+                        margin: const EdgeInsets.only(bottom: 12),
                         decoration: BoxDecoration(
-                          color: dueColor.withOpacity(0.12),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Text(
-                          dueText,
-                          style: TextStyle(
-                            color: dueColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12,
+                          color: theme.cardColor,
+                          borderRadius: BorderRadius.circular(18),
+                          border: Border.all(
+                            color: theme.colorScheme.onSurface.withOpacity(
+                              0.08,
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                  );
-                }),
-              
+                        child: ListTile(
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 6,
+                          ),
+                          leading: Checkbox(
+                            value: task.isCompleted,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            activeColor: theme.colorScheme.primary,
+                            onChanged: (_) {
+                              todoProvider.toggleTaskStatus(
+                                task.id,
+                                connectionProvider.isOnline,
+                              );
+                            },
+                          ),
+                          title: Text(
+                            task.title,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          subtitle: Text(
+                            task.description,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          trailing: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 6,
+                            ),
+                            decoration: BoxDecoration(
+                              color: dueColor.withOpacity(0.12),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              dueText,
+                              style: TextStyle(
+                                color: dueColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
+
               const SizedBox(height: 24),
 
               // Recent Grades Title
@@ -552,12 +655,15 @@ class DashboardScreen extends StatelessWidget {
                   ),
                   color: theme.cardColor,
                   child: ListTile(
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
                     leading: Container(
                       height: 48,
                       width: 48,
                       decoration: BoxDecoration(
-                        color: theme.colorScheme.surfaceVariant,
+                        color: theme.colorScheme.surfaceContainerHighest,
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
@@ -578,21 +684,29 @@ class DashboardScreen extends StatelessWidget {
                             Text(
                               grade.subject,
                               style: TextStyle(
-                                color: theme.colorScheme.onSurface.withOpacity(0.6),
+                                color: theme.colorScheme.onSurface.withOpacity(
+                                  0.6,
+                                ),
                                 fontSize: 12,
                               ),
                             ),
                             const SizedBox(width: 8),
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 6,
+                                vertical: 2,
+                              ),
                               decoration: BoxDecoration(
-                                color: theme.colorScheme.outline.withOpacity(0.1),
+                                color: theme.colorScheme.outline.withOpacity(
+                                  0.1,
+                                ),
                                 borderRadius: BorderRadius.circular(4),
                               ),
                               child: Text(
                                 grade.category,
                                 style: TextStyle(
-                                  color: theme.colorScheme.onSurface.withOpacity(0.7),
+                                  color: theme.colorScheme.onSurface
+                                      .withOpacity(0.7),
                                   fontSize: 10,
                                   fontWeight: FontWeight.w600,
                                 ),
@@ -650,10 +764,7 @@ class DashboardScreen extends StatelessWidget {
         const SizedBox(height: 2),
         Text(
           label,
-          style: TextStyle(
-            color: Colors.white.withOpacity(0.6),
-            fontSize: 11,
-          ),
+          style: TextStyle(color: Colors.white.withOpacity(0.6), fontSize: 11),
         ),
       ],
     );

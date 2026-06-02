@@ -1,31 +1,7 @@
 import 'dart:developer' as developer;
 
-class MockFirebaseService {
-  // Static in-memory lists representing the remote Firestore collections
-  static final List<Map<String, dynamic>> _remoteTasks = [
-    {
-      'id': 't1',
-      'title': 'Math Assignment: Calculus Limits',
-      'description': 'Solve problems 1 to 15 on page 42. Show all workings.',
-      'dueDate': DateTime.now().add(const Duration(days: 1, hours: 3)).toIso8601String(),
-      'isCompleted': false,
-    },
-    {
-      'id': 't2',
-      'title': 'Chemistry Lab Report',
-      'description': 'Write up the observations and conclusion for the Titration experiment.',
-      'dueDate': DateTime.now().add(const Duration(days: 3)).toIso8601String(),
-      'isCompleted': false,
-    },
-    {
-      'id': 't3',
-      'title': 'English Literature Reading',
-      'description': 'Read Chapters 4 and 5 of "To Kill a Mockingbird" and write a summary paragraph.',
-      'dueDate': DateTime.now().add(const Duration(days: 5)).toIso8601String(),
-      'isCompleted': true,
-    },
-  ];
-
+class MockGradeService {
+  // In-memory list representing grades (mocking external API response)
   static final List<Map<String, dynamic>> _remoteGrades = [
     {
       'id': 'g1',
@@ -95,49 +71,15 @@ class MockFirebaseService {
     },
   ];
 
-  // Helper to simulate API network response delays
   Future<void> _simulateNetworkDelay() async {
-    await Future.delayed(const Duration(milliseconds: 500));
-  }
-
-  // --- Task API Operations ---
-
-  Future<List<Map<String, dynamic>>> fetchTasks() async {
-    developer.log('MockFirebaseService: Fetching tasks from cloud...');
-    await _simulateNetworkDelay();
-    return List<Map<String, dynamic>>.from(_remoteTasks);
-  }
-
-  Future<void> uploadTask(Map<String, dynamic> taskJson) async {
-    developer.log('MockFirebaseService: Uploading task to cloud... ID: ${taskJson['id']}');
-    await _simulateNetworkDelay();
-    
-    // Remove if already exists (updating)
-    _remoteTasks.removeWhere((item) => item['id'] == taskJson['id']);
-    _remoteTasks.add(taskJson);
-    developer.log('MockFirebaseService: Task uploaded successfully.');
-  }
-
-  Future<void> deleteTask(String id) async {
-    developer.log('MockFirebaseService: Deleting task from cloud... ID: $id');
-    await _simulateNetworkDelay();
-    _remoteTasks.removeWhere((item) => item['id'] == id);
-    developer.log('MockFirebaseService: Task deleted from cloud.');
+    await Future.delayed(const Duration(milliseconds: 600));
   }
 
   // --- Grade API Operations ---
 
   Future<List<Map<String, dynamic>>> fetchGrades() async {
-    developer.log('MockFirebaseService: Fetching grades from cloud...');
+    developer.log('MockGradeService: Fetching grades from mock API endpoint...');
     await _simulateNetworkDelay();
     return List<Map<String, dynamic>>.from(_remoteGrades);
-  }
-
-  Future<void> uploadGrade(Map<String, dynamic> gradeJson) async {
-    developer.log('MockFirebaseService: Uploading grade to cloud... ID: ${gradeJson['id']}');
-    await _simulateNetworkDelay();
-    _remoteGrades.removeWhere((item) => item['id'] == gradeJson['id']);
-    _remoteGrades.add(gradeJson);
-    developer.log('MockFirebaseService: Grade uploaded successfully.');
   }
 }

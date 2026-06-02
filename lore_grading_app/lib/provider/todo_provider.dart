@@ -41,7 +41,6 @@ class TodoProvider with ChangeNotifier {
       case TaskFilter.completed:
         return _tasks.where((task) => task.isCompleted).toList();
       case TaskFilter.all:
-      default:
         return _tasks;
     }
   }

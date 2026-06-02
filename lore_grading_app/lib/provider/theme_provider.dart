@@ -21,19 +21,17 @@ class ThemeProvider extends ChangeNotifier {
       useMaterial3: true,
       brightness: Brightness.light,
       scaffoldBackgroundColor: const Color(0xFFFAF9FF), // Soft lavender white
-      cardColor: const Color(0xFFFFFFFF), // Pure white for cards
-      dialogBackgroundColor: const Color(0xFFFFFFFF),
+      cardColor: const Color(0xFFFFFFFF),
 
       colorScheme: const ColorScheme.light(
         primary: Color(0xFF8B5CF6), // Pastel purple/violet
         secondary: Color(0xFF10B981), // Pastel mint green
-        tertiary: Color(0xFFEC4899), // Pastel rose pink
-        background: Color(0xFFFAF9FF),
+        tertiary: Color(0xFFEC4899),
         surface: Color(0xFFFFFFFF),
         onPrimary: Colors.white,
         onSecondary: Colors.white,
         onSurface: Color(0xFF1F2937), // Deep slate gray
-        surfaceVariant: Color(0xFFF3F4F6), // Soft grey
+        surfaceContainerHighest: Color(0xFFF3F4F6), // Soft grey
         outline: Color(0xFFE5E7EB),
       ),
 
@@ -46,9 +44,7 @@ class ThemeProvider extends ChangeNotifier {
           fontSize: 24,
           fontWeight: FontWeight.bold,
         ),
-        iconTheme: IconThemeData(
-          color: Color(0xFF1F2937),
-        ),
+        iconTheme: IconThemeData(color: Color(0xFF1F2937)),
       ),
 
       textTheme: const TextTheme(
@@ -69,14 +65,8 @@ class ThemeProvider extends ChangeNotifier {
           fontSize: 16,
           fontWeight: FontWeight.w500,
         ),
-        bodyLarge: TextStyle(
-          color: Color(0xFF4B5563),
-          fontSize: 16,
-        ),
-        bodyMedium: TextStyle(
-          color: Color(0xFF6B7280),
-          fontSize: 14,
-        ),
+        bodyLarge: TextStyle(color: Color(0xFF4B5563), fontSize: 16),
+        bodyMedium: TextStyle(color: Color(0xFF6B7280), fontSize: 14),
       ),
 
       // Input Decoration Theme
@@ -94,9 +84,7 @@ class ThemeProvider extends ChangeNotifier {
           borderRadius: BorderRadius.circular(16),
           borderSide: const BorderSide(color: Color(0xFF8B5CF6), width: 2),
         ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
       ),
 
       // Chip Theme
@@ -110,6 +98,7 @@ class ThemeProvider extends ChangeNotifier {
         secondaryLabelStyle: const TextStyle(color: Color(0xFF8B5CF6)),
         brightness: Brightness.light,
       ),
+      dialogTheme: DialogThemeData(backgroundColor: const Color(0xFFFFFFFF)),
     );
   }
 
@@ -119,19 +108,17 @@ class ThemeProvider extends ChangeNotifier {
       useMaterial3: true,
       brightness: Brightness.dark,
       scaffoldBackgroundColor: const Color(0xFF0F0F1B), // Deep pastel midnight
-      cardColor: const Color(0xFF1E1E2F), // Darker slate-lavender
-      dialogBackgroundColor: const Color(0xFF1E1E2F),
+      cardColor: const Color(0xFF1E1E2F),
 
       colorScheme: const ColorScheme.dark(
         primary: Color(0xFFC084FC), // Soft pastel purple/violet
         secondary: Color(0xFFA7F3D0), // Soft pastel teal/mint
-        tertiary: Color(0xFFFBCFE8), // Soft pastel rose pink
-        background: Color(0xFF0F0F1B),
+        tertiary: Color(0xFFFBCFE8),
         surface: Color(0xFF1E1E2F),
         onPrimary: Colors.black,
         onSecondary: Colors.black,
         onSurface: Color(0xFFF8FAFC),
-        surfaceVariant: Color(0xFF2D2D44),
+        surfaceContainerHighest: Color(0xFF2D2D44),
         outline: Color(0xFF3B3B52),
       ),
 
@@ -144,9 +131,7 @@ class ThemeProvider extends ChangeNotifier {
           fontSize: 24,
           fontWeight: FontWeight.bold,
         ),
-        iconTheme: IconThemeData(
-          color: Color(0xFFF8FAFC),
-        ),
+        iconTheme: IconThemeData(color: Color(0xFFF8FAFC)),
       ),
 
       textTheme: const TextTheme(
@@ -167,14 +152,8 @@ class ThemeProvider extends ChangeNotifier {
           fontSize: 16,
           fontWeight: FontWeight.w500,
         ),
-        bodyLarge: TextStyle(
-          color: Color(0xFFE2E8F0),
-          fontSize: 16,
-        ),
-        bodyMedium: TextStyle(
-          color: Color(0xFF94A3B8),
-          fontSize: 14,
-        ),
+        bodyLarge: TextStyle(color: Color(0xFFE2E8F0), fontSize: 16),
+        bodyMedium: TextStyle(color: Color(0xFF94A3B8), fontSize: 14),
       ),
 
       // Input Decoration Theme
@@ -192,9 +171,7 @@ class ThemeProvider extends ChangeNotifier {
           borderRadius: BorderRadius.circular(16),
           borderSide: const BorderSide(color: Color(0xFFC084FC), width: 2),
         ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
       ),
 
       // Chip Theme
@@ -208,6 +185,7 @@ class ThemeProvider extends ChangeNotifier {
         secondaryLabelStyle: const TextStyle(color: Color(0xFFC084FC)),
         brightness: Brightness.dark,
       ),
+      dialogTheme: DialogThemeData(backgroundColor: const Color(0xFF1E1E2F)),
     );
   }
 }

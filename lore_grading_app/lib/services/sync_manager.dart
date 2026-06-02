@@ -1,12 +1,14 @@
 import 'dart:developer' as developer;
-import 'package:lore_grading_app/mock/mock_firebase_service.dart';
 import 'package:lore_grading_app/services/database_helper.dart';
+import 'package:lore_grading_app/services/firebase_service.dart';
+import 'package:lore_grading_app/services/mock_grade_service.dart';
 import 'package:lore_grading_app/models/task.dart';
 import 'package:lore_grading_app/models/grade.dart';
 
 class SyncManager {
   static final SyncManager instance = SyncManager._init();
-  final MockFirebaseService _mockFirebase = MockFirebaseService();
+  final FirebaseService _firebase = FirebaseService();
+  final MockGradeService _mockGrade = MockGradeService();
   final DatabaseHelper _dbHelper = DatabaseHelper.instance;
 
   SyncManager._init();
@@ -27,7 +29,7 @@ class SyncManager {
         developer.log('SyncManager: Found ${deletedTasks.length} soft-deleted tasks to sync.');
         for (var row in deletedTasks) {
           final id = row['id'] as String;
-          await _mockFirebase.deleteTask(id);
+          await _firebase.deleteTask(id);
           await _dbHelper.deleteTaskHard(id);
         }
         developer.log('SyncManager: Soft-deleted tasks synced and purged locally.');
@@ -47,7 +49,7 @@ class SyncManager {
           map.remove('is_synced');
           map.remove('is_deleted');
 
-          await _mockFirebase.uploadTask(map);
+          await _firebase.uploadTask(map);
           syncedIds.add(map['id'] as String);
         }
         await _dbHelper.markTasksAsSynced(syncedIds);
@@ -55,7 +57,7 @@ class SyncManager {
       }
 
       // 3. Pull new updates from remote Firestore to SQLite (Conflict resolution: local unsynced takes priority)
-      final remoteTasksJson = await _mockFirebase.fetchTasks();
+      final remoteTasksJson = await _firebase.fetchTasks();
       developer.log('SyncManager: Fetched ${remoteTasksJson.length} tasks from cloud database.');
       for (var remoteJson in remoteTasksJson) {
         final id = remoteJson['id'] as String;
@@ -91,7 +93,7 @@ class SyncManager {
     try {
       // Grades are usually managed by the teacher, so this is mostly a PULL operation.
       // 1. Fetch remote grades from Firestore
-      final remoteGradesJson = await _mockFirebase.fetchGrades();
+      final remoteGradesJson = await _mockGrade.fetchGrades();
       developer.log('SyncManager: Fetched ${remoteGradesJson.length} grades from cloud.');
 
       // 2. Overwrite local grades database with cloud data

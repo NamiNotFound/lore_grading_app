@@ -5,7 +5,9 @@ import 'package:lore_grading_app/models/grade.dart';
 import 'package:intl/intl.dart';
 
 class GradingScreen extends StatefulWidget {
-  const GradingScreen({super.key});
+  final VoidCallback? onMenuPressed;
+
+  const GradingScreen({super.key, this.onMenuPressed});
 
   @override
   State<GradingScreen> createState() => _GradingScreenState();
@@ -37,7 +39,9 @@ class _GradingScreenState extends State<GradingScreen> {
       averageText = '${gradeProvider.overallAverage.toStringAsFixed(1)}%';
       letter = gradeProvider.overallLetterGrade;
     } else {
-      final average = gradeProvider.subjectAverages[gradeProvider.selectedSubjectFilter] ?? 0.0;
+      final average =
+          gradeProvider.subjectAverages[gradeProvider.selectedSubjectFilter] ??
+          0.0;
       averageText = '${average.toStringAsFixed(1)}%';
       if (average >= 90) {
         letter = 'A';
@@ -54,6 +58,12 @@ class _GradingScreenState extends State<GradingScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: widget.onMenuPressed != null
+            ? IconButton(
+                icon: const Icon(Icons.menu),
+                onPressed: widget.onMenuPressed,
+              )
+            : null,
         title: const Text(
           'Grade Report',
           style: TextStyle(fontWeight: FontWeight.bold),
@@ -76,7 +86,8 @@ class _GradingScreenState extends State<GradingScreen> {
                 itemCount: gradeProvider.uniqueSubjects.length,
                 itemBuilder: (context, index) {
                   final subject = gradeProvider.uniqueSubjects[index];
-                  final isSelected = gradeProvider.selectedSubjectFilter == subject;
+                  final isSelected =
+                      gradeProvider.selectedSubjectFilter == subject;
 
                   return Padding(
                     padding: const EdgeInsets.only(right: 8),
@@ -91,7 +102,9 @@ class _GradingScreenState extends State<GradingScreen> {
                         color: isSelected
                             ? theme.colorScheme.primary
                             : theme.colorScheme.onSurface.withOpacity(0.6),
-                        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                        fontWeight: isSelected
+                            ? FontWeight.bold
+                            : FontWeight.normal,
                       ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -125,7 +138,10 @@ class _GradingScreenState extends State<GradingScreen> {
                     color: theme.colorScheme.primary.withOpacity(0.2),
                   ),
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 16,
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -187,7 +203,7 @@ class _GradingScreenState extends State<GradingScreen> {
             // Grades List View
             Expanded(
               child: ListView.builder(
-                padding: const EdgeInsets.fromLTRB(16, 0, 16, 100),
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
                 itemCount: gradeProvider.filteredGrades.length,
                 physics: const BouncingScrollPhysics(),
                 itemBuilder: (context, index) {
@@ -237,7 +253,10 @@ class _GradingScreenState extends State<GradingScreen> {
                         height: 46,
                         width: 46,
                         decoration: BoxDecoration(
-                          color: _getGradeColor(grade.percentage, theme).withOpacity(0.15),
+                          color: _getGradeColor(
+                            grade.percentage,
+                            theme,
+                          ).withOpacity(0.15),
                           shape: BoxShape.circle,
                         ),
                         alignment: Alignment.center,
@@ -271,20 +290,26 @@ class _GradingScreenState extends State<GradingScreen> {
                                   grade.subject,
                                   style: TextStyle(
                                     fontSize: 12,
-                                    color: theme.colorScheme.onSurface.withOpacity(0.5),
+                                    color: theme.colorScheme.onSurface
+                                        .withOpacity(0.5),
                                   ),
                                 ),
                                 const SizedBox(width: 8),
                                 Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 6,
+                                    vertical: 2,
+                                  ),
                                   decoration: BoxDecoration(
-                                    color: theme.colorScheme.outline.withOpacity(0.1),
+                                    color: theme.colorScheme.outline
+                                        .withOpacity(0.1),
                                     borderRadius: BorderRadius.circular(4),
                                   ),
                                   child: Text(
                                     grade.category,
                                     style: TextStyle(
-                                      color: theme.colorScheme.onSurface.withOpacity(0.7),
+                                      color: theme.colorScheme.onSurface
+                                          .withOpacity(0.7),
                                       fontSize: 10,
                                       fontWeight: FontWeight.w600,
                                     ),
@@ -326,13 +351,21 @@ class _GradingScreenState extends State<GradingScreen> {
                     const SizedBox(height: 16),
                     const Divider(),
                     const SizedBox(height: 8),
-                    
+
                     // Stats Row (Weight & Date)
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        _buildDetailStat('Weight', '${(grade.weight * 100).toStringAsFixed(0)}%', Icons.scale),
-                        _buildDetailStat('Graded On', formattedDate, Icons.calendar_today),
+                        _buildDetailStat(
+                          'Weight',
+                          '${(grade.weight * 100).toStringAsFixed(0)}%',
+                          Icons.scale,
+                        ),
+                        _buildDetailStat(
+                          'Graded On',
+                          formattedDate,
+                          Icons.calendar_today,
+                        ),
                       ],
                     ),
                     const SizedBox(height: 16),
@@ -351,7 +384,8 @@ class _GradingScreenState extends State<GradingScreen> {
                       width: double.infinity,
                       padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
-                        color: theme.colorScheme.surfaceVariant.withOpacity(0.4),
+                        color: theme.colorScheme.surfaceContainerHighest
+                            .withOpacity(0.4),
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(
                           color: theme.colorScheme.outline.withOpacity(0.08),
@@ -374,7 +408,9 @@ class _GradingScreenState extends State<GradingScreen> {
                               style: TextStyle(
                                 fontSize: 13,
                                 fontStyle: FontStyle.italic,
-                                color: theme.colorScheme.onSurface.withOpacity(0.85),
+                                color: theme.colorScheme.onSurface.withOpacity(
+                                  0.85,
+                                ),
                               ),
                             ),
                           ),
@@ -404,11 +440,17 @@ class _GradingScreenState extends State<GradingScreen> {
               children: [
                 Text(
                   label,
-                  style: TextStyle(fontSize: 10, color: theme.colorScheme.onSurface.withOpacity(0.4)),
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: theme.colorScheme.onSurface.withOpacity(0.4),
+                  ),
                 ),
                 Text(
                   value,
-                  style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),
